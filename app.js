@@ -6,12 +6,16 @@ function requireHTTPS(req, res, next) {
     next();
 }
 const express = require('express');
-const app = express();
-const app = express();
-app.use(express.static('./dist/todo-client'));
-app.get('/*', function(req, res) {
-    res.sendFile('index.html', {root: 'dist/todo-client/'}
-  );
-  });
+const path = require('path');
 
+const app = express();
+
+// Serve only the static files form the dist directory
+app.use(express.static('./dist/todo-client'));
+
+app.get('/*', (req, res) =>
+    res.sendFile('index.html', {root: 'dist/todo-client/'}),
+);
+
+// Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8080);
