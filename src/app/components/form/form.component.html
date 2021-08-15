@@ -1,0 +1,31 @@
+<div class="app-form__inner">
+    <span class="app-form__heading">{{'Новая задача' | uppercase}}</span>
+    <form [formGroup]="todoForm" (ngSubmit)="submit(todoForm.value)" class="app-form__form">
+      <mat-form-field appearance="fill">
+        <mat-label>Название задачи</mat-label>
+        <input matInput formControlName="todoText" />
+      </mat-form-field>
+      <br />
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Категория</mat-label>
+        <mat-select formControlName="selectedCategory">
+          <mat-option [value]="'new'">Новая категория</mat-option>
+          <mat-option *ngFor="let project of projects$ | async; trackBy: trackByFn" [value]="project.title">
+            {{project.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br /><br />
+  
+      <mat-form-field class="form-element" *ngIf="todoForm.value.selectedCategory === 'new'">
+        <mat-label>Название категории</mat-label>
+        <input matInput placeholder="Новая категория" formControlName="newCategory">
+      </mat-form-field>
+  
+      <mat-dialog-actions class="app-form__actions">
+      <button mat-raised-button mat-dialog-close class="app-form__actions-btn">Отмена</button>
+      <button mat-raised-button mat-dialog-close class="app-form__actions-btn" [disabled]="!todoForm.valid" color="primary" type="submit">Ок</button>
+    </mat-dialog-actions>
+    </form>
+  </div>
