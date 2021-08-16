@@ -3,10 +3,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { plainToClass } from 'class-transformer';
+import { environment } from 'src/environments/environment';
 import { Project } from '../models/project-model';
 import { Todo } from '../models/todo-model';
 
-const url = 'https://todo-api-oblako.herokuapp.com/';
+const url = environment.apiUrl;
+
 
 @Injectable({
   providedIn: 'root',
@@ -35,8 +37,7 @@ export class ApiService {
     const body = `{
         "text":"${todoText}",
         "title":"${projectTitle}"
-    }
-    `;
+    }`;
     return this.http
       .post(url + 'todos', body, this.httpOptions)
       .pipe(map((plainTodo) => plainToClass(Todo, plainTodo)));

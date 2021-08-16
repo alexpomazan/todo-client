@@ -3,6 +3,8 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {Project} from '../models/project-model';
 import {Todo} from '../models/todo-model';
 import {ApiService} from './api.service';
+import { plainToClass } from 'class-transformer';
+
 
 @Injectable({
   providedIn: 'root',
@@ -25,20 +27,20 @@ export class ApiConverseService {
   }
 
   updateTodo(project:Project, todo: Todo): void {
-    this.api.updateTodo(project, todo).subscribe((todo_changed) => {
-      todo_changed.toggleCompleted();
+    this.api.updateTodo(project, todo).subscribe(() => {
       this._projects.next(this.objects);
     });
   }
 
   createTodo(todo_text: string, project_title: string): void {
-    this.api.createTodo(todo_text, project_title).subscribe(todo => {
-      this.project = this.objects.find(e => e.id === todo.project_id);
-      if (typeof this.project !== 'undefined') {
-        this.project.todos.push(todo);
+    this.api.createTodo(todo_text, project_title).subscribe(() => {
+      let newTodo = plainToClass(Todo, {"text": todo_text});
+      let newProject = plainToClass(Project, {"title": project_title});
+      this.project = this.objects.find(e => e.title === project_title);
+      if (this.project) {   
+        this.project.todos.push(newTodo);
       } else {
-        let newProject = new Project(project_title);
-        newProject.todos = [todo];
+        newProject.todos = [newTodo];
         this.objects.push(newProject);
       }
     });
