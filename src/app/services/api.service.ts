@@ -34,10 +34,7 @@ export class ApiService {
   }
 
   createTodo(todoText: string, projectTitle: string): Observable<Todo> {
-    const body = `{
-        "text":"${todoText}",
-        "title":"${projectTitle}"
-    }`;
+    const body = JSON.stringify({text: todoText, title: projectTitle});
     return this.http
       .post(url + 'todos', body, this.httpOptions)
       .pipe(map((plainTodo) => plainToClass(Todo, plainTodo)));

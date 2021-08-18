@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, TrackByFunction} from '@angular/core';
+import {Component, Input, OnInit, TrackByFunction } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Todo} from '../../models/todo-model';
 import {Project} from '../../models/project-model';
@@ -10,7 +10,6 @@ import {ApiConverseService} from '../../services/api-converse.service';
   styleUrls: ['./todo.component.less'],
 })
 
-
 export class TodoComponent implements OnInit {
   projects$!: Observable<Project[]>;
   @Input() 
@@ -20,10 +19,8 @@ export class TodoComponent implements OnInit {
     private apiConverseService: ApiConverseService,
   ) {}
 
-  trackByFn (item: any): number {
-    return item.id
-  }
-
+  trackByFn: TrackByFunction<Project|Todo> = (_, item: Project|Todo) => item.id;
+  
   ngOnInit(): void {
     this.projects$ = this.apiConverseService.projects;
   }

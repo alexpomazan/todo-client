@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TrackByFunction} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {
   FormGroup,
   FormBuilder,
@@ -54,9 +53,7 @@ export class FormComponent implements OnInit {
     });
   }
 
-  trackByFn(item: any): number {
-    return item.id;
-  }
+  trackByFn: TrackByFunction<Project> = (_, item: Project) => item.id;
 
   initForm() {
     this.todoForm = this.fb.group({
